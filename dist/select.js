@@ -273,7 +273,7 @@
         //Remove already selected items 
         $scope.$watchCollection('$select.selected', function(selectedItems){
           var data = ctrl.parserResult.source($scope);
-          if (!selectedItems.length) {
+          if (!selectedItems || !selectedItems.length) {
             setItemsFn(data);            
           }else{
             var filteredItems = data.filter(function(i) {return selectedItems.indexOf(i) < 0;});
@@ -392,7 +392,7 @@
 
     ctrl.getPlaceholder = function(){
       //Refactor single?
-      if(ctrl.multiple && ctrl.selected.length) return;
+      if(ctrl.multiple && ctrl.selected && ctrl.selected.length) return;
       return ctrl.placeholder;
     };
 
@@ -618,7 +618,7 @@
         ngModel.$parsers.unshift(function (inputValue) {
           var locals = {},
               result;
-          if ($select.multiple){
+          if ($select.multiple && $select.selected){
             var resultMultiple = [];
             for (var j = $select.selected.length - 1; j >= 0; j--) {
               locals = {};
